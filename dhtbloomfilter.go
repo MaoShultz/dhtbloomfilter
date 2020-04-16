@@ -1,11 +1,12 @@
 package dhtbloomfilter
 
 import (
+	"encoding/hex"
 	"math"
 	"math/bits"
 )
 
-const bfSize = 256
+const bfSize = 256 // in bytes
 
 /*
 BloomFilter sha1 base use in DHT get_peers response. BEP33
@@ -40,4 +41,11 @@ func (bf *BloomFilter) EstimatedSize() int {
 	c := math.Min(float64(m-1), float64(zeros))
 
 	return int(math.Log(c/float64(m)) / (2 * math.Log(1-1/float64(m))))
+}
+
+/*
+Dump bytes as HEX string
+*/
+func (bf *BloomFilter) Dump() string {
+	return hex.Dump(bf)
 }

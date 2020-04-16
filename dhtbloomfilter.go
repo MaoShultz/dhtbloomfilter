@@ -47,5 +47,5 @@ func (bf *BloomFilter) EstimatedSize() int {
 Dump bytes as HEX string
 */
 func (bf *BloomFilter) Dump() string {
-	return hex.Dump(bf)
+	return hex.Dump(bf[:])
 }

@@ -57,3 +57,28 @@ func (bf *BloomFilter) UnmarshalBencode(b []byte) (err error) {
 	copy(bf[:], b[:bfSize])
 	return nil
 }
+
+/*
+CalcSize Rounded integer, approximating the number of items in the filter.
+*/
+func CalcSize(data *[]byte) int {
+
+	if len(data) != bfSize {
+		return 0
+	}
+
+	zeros := 0
+
+	for i := 0; i < bfSize; i++ {
+		zeros = zeros + bits.OnesCount8(^data[i])
+	}
+
+	if zeros == 0 {
+		return 6000 // The maximum capacity of the bloom filter used in BEP33
+	}
+
+	m := 256 * 8
+	c := math.Min(float64(m-1), float64(zeros))
+
+	return int(math.Log(c/float64(m)) / (2 * math.Log(1-1/float64(m))))
+}

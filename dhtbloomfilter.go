@@ -49,3 +49,11 @@ Dump bytes as HEX string
 func (bf *BloomFilter) Dump() string {
 	return hex.Dump(bf[:])
 }
+
+/*
+UnmarshalBencode bencode unmarshaler
+*/
+func (bf *BloomFilter) UnmarshalBencode(b []byte) (err error) {
+	copy(bf[:], b[:bfSize])
+	return nil
+}
